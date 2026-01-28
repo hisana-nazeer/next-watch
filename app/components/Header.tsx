@@ -1,3 +1,4 @@
+
 import React from 'react'
 import Image from 'next/image'
 import nextwatch_logo from '../../public/nextwatch_logo.png'

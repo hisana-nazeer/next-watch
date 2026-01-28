@@ -1,5 +1,16 @@
 -Create next app
 -Configured tailwind css
+-Header
+-Login Form
+-Sign Up Form
+-Form Validation
+-useRef Hook
+-Firebase setup
+-Deploying app to production
+-Create signup User, sign in user
+-user redux store
+
+
 
 #Features
 
