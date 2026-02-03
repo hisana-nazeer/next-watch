@@ -1,4 +1,3 @@
-
 "use client";
 
 import Header from "../components/Header";
@@ -6,10 +5,19 @@ import { useState } from "react";
 import { auth, db } from "../lib/firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { useRouter } from "next/navigation";
+import {useSelector } from "react-redux";
 
 export default function Page() {
+ 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+
+    
+
+
 
   const handleGoogleLogin = async () => {
     try {
@@ -24,9 +32,9 @@ export default function Page() {
         doc(db, "users", user.uid),
         {
           uid: user.uid,
-          name: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL,
+          name: user.displayName??"",
+          email: user.email??"",
+          photoURL: user.photoURL??"",
           provider: "google",
           lastLoginAt: serverTimestamp(),
         },
@@ -34,12 +42,15 @@ export default function Page() {
       );
 
       // router.push("/home") — add later
-    } catch (error: any) {
+   console.log("user got loggedin") } 
+   catch (error: any) {
       setErrorMessage(error.message);
-    } finally {
+    } 
+    finally{
       setLoading(false);
     }
   };
+   const user = useSelector((state: any) => state.user);
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -52,10 +63,11 @@ export default function Page() {
 
         <button
           onClick={handleGoogleLogin}
-          disabled={loading}
+          disabled={loading||!!user}
           className="w-full rounded bg-white text-black py-3 text-lg font-semibold hover:bg-gray-200 transition disabled:opacity-60"
         >
-          {loading ? "Signing in..." : "Continue with Google"}
+          {user?
+          "Signed in": loading ? "Signing in..." : "Continue with Google"}
         </button>
 
         {errorMessage && (
